@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const activityRole = require('./commands/activityRole')
-const data = require('data.json')
+const data = require("./data.json")
 const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION" ,"VOICE_STATE_UPDATE"]});
 
 const prefix = '!!';

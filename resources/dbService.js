@@ -1,7 +1,7 @@
 const mysql = require("mysql2");
 const date = new Date()
 const today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
-const data = require('data.json')
+const data = require("../data.json")
 
 class dbService {
 
