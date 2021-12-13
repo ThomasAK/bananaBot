@@ -4,22 +4,15 @@ const data = require('../data.json')
 
 module.exports = {
     name: 'reactionrole',
-    reactionRoleAdd: async (reaction, user) => {
+    async reactionRoleAdd (reaction, user) {
         if(reaction.message.channel.id !== data.channelID) return
+        const role = roles.find(role => role.emoji === reaction.emoji.name)
+        await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(r => r.name === role.name))
 
-        roles.forEach(role => {
-            if (role.emoji === reaction.emoji.name){
-                reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(r => r.name === role.name))
-            }
-        })
     },
-    reactionRoleRemove: async (reaction, user) =>{
+    async reactionRoleRemove (reaction, user) {
         if(reaction.message.channel.id !== data.channelID) return
-
-        roles.forEach(role => {
-            if (role.emoji === reaction.emoji.name){
-                reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(r => r.name === role.name))
-            }
-        })
+        const role = roles.find(role => role.emoji === reaction.emoji.name)
+        await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(r => r.name === role.name))
     }
 }

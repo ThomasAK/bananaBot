@@ -26,13 +26,14 @@ class dbService {
     }
 
     async addUserActivity(userID){
-        const query = "INSERT INTO user_activity VALUES (" + userID + ", '" + today+ "')"
+        const query = `INSERT INTO user_activity VALUES (${userID}, '${today}')`
         await this.runQuery(query)
     }
 
     async getActivityCount(userID, date){
-        const query ="SELECT count(*) AS activityCount FROM user_activity WHERE user_id = '"+ userID + "' AND activity_date >= '" + date + "'"
-        return await this.runQuery(query)
+        const query = `SELECT count(*) AS activityCount FROM user_activity WHERE user_id = ${userID} AND activity_date >= '${date}'`
+        const count = await this.runQuery(query)
+        return count[0].activityCount
     }
 
 

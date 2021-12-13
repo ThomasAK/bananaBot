@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const activityRole = require('./commands/activityRole')
+const activityRole =  require('./commands/activityRole')
+const runActivity = new activityRole()
 const data = require("./data.json")
 const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION" ,"VOICE_STATE_UPDATE"]});
 
@@ -32,12 +33,15 @@ client.on('message', message => {
         case 'reactionrole':
             client.commands.get('reactionrolesetup').execute(message, args, Discord);
             break;
+        case 'timeout':
+            const user = args.shift()
+            client.commands.get('timeout').execute(message, user.slice(3, user.length - 1))
+            break;
     }
 })
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
    if (oldState.channel == null && newState != null){
-       const runActivity = await new activityRole()
        await runActivity.updateStatus(newState)
    }
 
