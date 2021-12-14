@@ -1,9 +1,9 @@
-const date = new Date();
 const dbService =  require('../resources/dbService')
 
 class activityRole {
 
     async updateStatus(state) {
+        const date = new Date();
         function getRole (roleName){return state.member.roles.cache.find(role => role.name === roleName);}
         if (getRole('Commander in Chief') || getRole('Mod Boss') || getRole('OG') || getRole('Server Booster')) return
         const today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
