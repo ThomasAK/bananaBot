@@ -10,7 +10,7 @@ class dbService {
             host: data.host,
             user: data.dbUser,
             password: data.dbPassword,
-            database: data.database
+            database: 'discordbot'
         });
         connection.connect(function (err) {
             if (err) throw err;

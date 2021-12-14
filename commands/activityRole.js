@@ -8,10 +8,11 @@ class activityRole {
         function getRole (roleName){return state.member.roles.cache.find(role => role.name === roleName);}
         if (getRole('Commander in Chief') || getRole('Mod Boss') || getRole('OG') || getRole('Server Booster')) return
 
-        console.log(`${state.member.displayName} was active ${today}`)
+
         const db = new dbService()
         const activeToday = await db.getActivityCount(state.id, today)
         if (activeToday) return
+        console.log(`${state.member.displayName} was active ${today}`)
 
         await db.addUserActivity(state.id);
         const past42Days = new Date(Date.now() - 43 * 24 * 60 * 60 * 1000)
