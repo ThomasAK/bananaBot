@@ -1,6 +1,5 @@
 const mysql = require("mysql2");
 const date = new Date()
-const today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
 const data = require("../data.json")
 
 class dbService {
@@ -26,6 +25,7 @@ class dbService {
     }
 
     async addUserActivity(userID){
+        const today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
         const query = `INSERT INTO user_activity VALUES (${userID}, '${today}')`
         await this.runQuery(query)
     }
