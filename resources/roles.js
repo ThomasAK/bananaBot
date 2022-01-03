@@ -20,6 +20,9 @@ module.exports = {
        },{
            name: 'EFT',
            emoji: '💸'
+       },{
+           name: 'APEX',
+           emoji: '🎇'
        }
         ]
 }
