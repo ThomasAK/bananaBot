@@ -11,7 +11,7 @@ module.exports = {
             .setColor('#e42643')
             .setTitle('Select Roles')
             .setDescription(description)
-        let messageEmbed = await message.channel.send(embed);
+        let messageEmbed = await message.channel.send({ embeds: [embed] });
         roles.forEach(role => {
             messageEmbed.react(role.emoji)
         })
