@@ -27,11 +27,11 @@ client.on('message', message => {
 
     switch (command){
         case 'ping':
-            client.commands.get("ping").execute(message, args);
+            client.commands.get("ping").execute(message);
             break;
 
         case 'reactionrole':
-            client.commands.get('reactionrolesetup').execute(message, args, Discord);
+            client.commands.get('reactionrolesetup').execute(message, Discord);
             break;
         case 'timeout':
             const user = args.shift()
@@ -41,10 +41,7 @@ client.on('message', message => {
 })
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
-   if (oldState.channel == null && newState != null){
-       await runActivity.updateStatus(newState)
-   }
-
+   if (oldState.channel == null && newState != null) await runActivity.updateStatus(newState)
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
@@ -54,6 +51,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
 client.on('messageReactionRemove', async (reaction, user) => {
     await client.commands.get('reactionrole').reactionRoleRemove(reaction, user)
 
+})
+
+client.on('presenceUpdate', async (oldPresence, newPresence) => {
+    if (newPresence.activities.type === 'STREAMING') await client.commands.get('streamingMessage').execute(newPresence, Discord)
 })
 
 
