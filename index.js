@@ -54,7 +54,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
 
 client.on('presenceUpdate', async (oldPresence, newPresence) =>{
     if (!newPresence.activities[0]) return
-    if(newPresence.activities[0].type === 'STREAMING') await client.commands.get('streamingMessage').execute(newPresence)
+    if(newPresence.activities[0].type === 'STREAMING' && oldPresence.activities[0].type !== 'STREAMING') await client.commands.get('streamingMessage').execute(newPresence)
 })
 
 client.login(data.clientToken).then();
