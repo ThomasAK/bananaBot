@@ -58,4 +58,4 @@ client.on('presenceUpdate', async (oldPresence, newPresence) => {
 })
 
 
-client.login(data.clientToken);
+client.login(data.clientToken).then();
