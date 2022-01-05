@@ -1,14 +1,14 @@
-const Discord = require('discord.js');
+const { Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE'] });
 const activityRole =  require('./commands/activityRole')
 const runActivity = new activityRole()
 const data = require("./data.json")
-const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION" ,"VOICE_STATE_UPDATE"]});
 
 const prefix = '!!';
 
 const fs = require('fs');
 
-client.commands = new Discord.Collection();
+client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -16,11 +16,11 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command)
 }
 
-client.once('ready', () => {
+client.on('ready', () => {
     console.log('Mr Bot is online!')
 })
 
-client.on('message', message => {
+client.on('messageCreate', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
@@ -31,7 +31,7 @@ client.on('message', message => {
             break;
 
         case 'reactionrole':
-            client.commands.get('reactionrolesetup').execute(message, Discord);
+            client.commands.get('reactionrolesetup').execute(message, MessageEmbed);
             break;
         case 'timeout':
             const user = args.shift()
@@ -50,12 +50,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 client.on('messageReactionRemove', async (reaction, user) => {
     await client.commands.get('reactionrole').reactionRoleRemove(reaction, user)
-
 })
 
-client.on('presenceUpdate', async (oldPresence, newPresence) => {
-    if (newPresence.activities.type === 'STREAMING') await client.commands.get('streamingMessage').execute(newPresence, Discord)
+client.on('presenceUpdate', async (oldPresence, newPresence) =>{
+    if (!newPresence.activities[0]) return
+    if(newPresence.activities[0].type === 'STREAMING') await client.commands.get('streamingMessage').execute(newPresence)
 })
-
 
 client.login(data.clientToken).then();
