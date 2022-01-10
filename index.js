@@ -61,6 +61,7 @@ client.on('presenceUpdate', async (oldPresence, newPresence) =>{
     newPresence.activities.forEach(activity => {
         if(activity.type === 'STREAMING' && !alreadyStreaming )  client.commands.get('streamingMessage').execute(newPresence).then()
     })
+    if(newPresence.member.id === '306739394457501699') console.log(newPresence.activities)
 })
 
 client.login(data.clientToken).then();
