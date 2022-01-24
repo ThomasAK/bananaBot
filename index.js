@@ -59,7 +59,7 @@ client.on('presenceUpdate', async (oldPresence, newPresence) =>{
         if (activity.type === 'STREAMING') alreadyStreaming = true
     })
     newPresence.activities.forEach(activity => {
-        if(activity.type === 'STREAMING' && !alreadyStreaming )  client.commands.get('streamingMessage').execute(newPresence).then()
+        if(activity.type === 'STREAMING' && !alreadyStreaming )  client.commands.get('streamingMessage').execute(newPresence, activity).then()
     })
 })
 
