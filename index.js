@@ -55,9 +55,10 @@ client.on('messageReactionRemove', async (reaction, user) => {
 client.on('presenceUpdate', async (oldPresence, newPresence) =>{
     if (!newPresence.activities[0]) return
     let alreadyStreaming = false
+    if(oldPresence.activities[0]){
     oldPresence.activities.forEach(activity => {
         if (activity.type === 'STREAMING') alreadyStreaming = true
-    })
+    })}
     newPresence.activities.forEach(activity => {
         if(activity.type === 'STREAMING' && !alreadyStreaming )  client.commands.get('streamingMessage').execute(newPresence, activity).then()
     })
