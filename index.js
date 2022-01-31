@@ -37,6 +37,9 @@ client.on('messageCreate', message => {
             const user = args.shift()
             client.commands.get('timeout').execute(message, user.slice(3, user.length - 1))
             break;
+        case 'lf':
+            client.commands.get('lf').execute(message)
+            break;
     }
 })
 
