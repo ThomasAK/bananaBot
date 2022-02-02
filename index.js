@@ -1,5 +1,5 @@
 const { Client, Intents, Collection, MessageEmbed} = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE'] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER'] });
 const activityRole =  require('./commands/activityRole')
 const runActivity = new activityRole()
 const data = require("./data.json")
@@ -65,6 +65,10 @@ client.on('presenceUpdate', async (oldPresence, newPresence) =>{
     newPresence.activities.forEach(activity => {
         if(activity.type === 'STREAMING' && !alreadyStreaming )  client.commands.get('streamingMessage').execute(newPresence, activity).then()
     })
+})
+
+client.on('guildMemberAdd', async member => {
+  await client.commands.get('welcomeMessage').execute(member, client)
 })
 
 client.login(data.clientToken).then();
