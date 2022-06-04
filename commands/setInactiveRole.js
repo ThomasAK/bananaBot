@@ -9,7 +9,7 @@ module.exports = {
         function getRole (roleName, member){return member.roles.cache.find(role => role.name === roleName);}
 
         message.guild.members.cache.map( async member  => {
-            if (getRole('Commander in Chief', member) || getRole('Mod Boss', member) || getRole('OG', member) || getRole('Server Booster', member) || getRole('Regular', member)) return
+            if (getRole('Commander in Chief', member) || getRole('Mod Boss', member) || getRole('OG', member) || getRole('Server Booster', member) || getRole('Regular', member) || getRole('Bots', member)) return
             const count =  await db.getActivityCount(member.id, past90Days.getFullYear() + '-' + (past90Days.getMonth()+1) + '-' + past90Days.getDate())
             const inactiveRole = message.guild.roles.cache.find(role => role.name === 'Inactive')
             if (count < 1) {
