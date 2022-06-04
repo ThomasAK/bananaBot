@@ -40,7 +40,7 @@ client.on('messageCreate', message => {
         case 'lf':
             client.commands.get('lf').execute(message).then()
             break;
-        case 'setInactive':
+        case 'setinactive':
             client.commands.get('setInactive').execute(message).then()
             break;
     }
