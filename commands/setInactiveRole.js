@@ -1,6 +1,7 @@
 const dbService =  require('../resources/dbService')
 
-class SetInactiveRole {
+module.exports = {
+    name: 'setInactive',
     async execute(message) {
         const db = new dbService()
         const past90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
@@ -19,9 +20,4 @@ class SetInactiveRole {
             }
         }
     }
-}
-
-module.exports = {
-    name: 'setInactive',
-    setInactiveRole: new SetInactiveRole
 }
