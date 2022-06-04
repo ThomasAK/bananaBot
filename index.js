@@ -40,6 +40,9 @@ client.on('messageCreate', message => {
         case 'lf':
             client.commands.get('lf').execute(message).then()
             break;
+        case 'setInactive':
+            client.commands.get('SetInactiveRole').setInactiveRole.execute(message).then()
+            break;
     }
 })
 
