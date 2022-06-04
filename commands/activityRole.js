@@ -6,6 +6,8 @@ class activityRole {
         const date = new Date();
         function getRole (roleName){return state.member.roles.cache.find(role => role.name === roleName);}
         if (getRole('Commander in Chief') || getRole('Mod Boss') || getRole('OG') || getRole('Server Booster')) return
+        if (getRole('Inactive')) state.member.roles.remove(getRole('Inactive'))
+
         const today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
 
         const db = new dbService()
@@ -18,7 +20,7 @@ class activityRole {
         const count = await db.getActivityCount(state.id, past42Days.getFullYear() + '-' + (past42Days.getMonth()+1) + '-' + past42Days.getDate())
 
         const activityRole = state.guild.roles.cache.find(role => role.name === 'Regular')
-        if (!await state.member.roles.cache.find(r => r.name === 'Regular')) {
+        if (!await getRole('Regular')) {
             if (count > 18) {
                 await state.member.roles.add(activityRole);
                 const dm = await state.member.createDM()
