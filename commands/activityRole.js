@@ -3,6 +3,7 @@ const dbService =  require('../resources/dbService')
 class activityRole {
 
     async updateStatus(state) {
+        if (state.member.guild.name !== 'The Filthy Animals') return
         const date = new Date();
         function getRole (roleName){return state.member.roles.cache.find(role => role.name === roleName);}
         if (getRole('Commander in Chief') || getRole('Mod Boss') || getRole('OG') || getRole('Server Booster')) return

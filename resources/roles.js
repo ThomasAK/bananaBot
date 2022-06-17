@@ -23,6 +23,9 @@ module.exports = {
     }, {
         name: 'APEX',
         emoji: '🎇'
+    }, {
+        name: 'Player',
+        emoji: '✅'
     }
     ]
 }
