@@ -3,6 +3,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_M
 const activityRole =  require('./commands/activityRole')
 const runActivity = new activityRole()
 const data = require("./data.json")
+import removeChannel from "./commands/removeChannel";
 
 const prefix = '!!';
 
@@ -43,11 +44,16 @@ client.on('messageCreate', message => {
         case 'setinactive':
             client.commands.get('setInactive').execute(message).then()
             break;
+        case 'createchannel':
+            client.commands.get('CreateChannel').execute(message).then()
+            break;
     }
 })
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
-   if (oldState.channel == null && newState != null) await runActivity.updateStatus(newState)
+    if (oldState.channel == null && newState != null) await runActivity.updateStatus(newState)
+    if (oldState.guild.name !== data.guilds[1].name)return
+    if (oldState.channel !== newState.channel) await removeChannel.execute(oldState)
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
