@@ -1,9 +1,8 @@
 
 class RemoveChannel {
     execute(oldState){
-        console.log('gate 2')
-        if (!oldState.channel.members) oldState.channel.delete('Channel Empty')
-        console.log(oldState.channel.members)
+        console.log(oldState.channel.size)
+        if (oldState.channel.members.size < 1) oldState.channel.delete('Channel Empty')
     }
 }
 
