@@ -5,6 +5,7 @@ module.exports = {
     description: 'This creates a new channel',
     execute(message){
         const messageDetails = message.content.split(/ +/)
+        console.log(message.guild.channels.size)
         message.guild.channels.create(`${messageDetails[1]}`, {
             type: 'GUILD_VOICE',
             position: message.guild.channels.size - 1,
