@@ -1,7 +1,7 @@
 const data = require('../data.json')
 
 module.exports = {
-    name: 'CreateChannel',
+    name: 'createChannel',
     description: 'This creates a new channel',
     execute(message){
         const messageDetails = message.content.split(/ +/)
