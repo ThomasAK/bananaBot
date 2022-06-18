@@ -7,7 +7,7 @@ module.exports = {
         const messageDetails = message.content.split(/ +/)
         message.guild.channels.create(`${messageDetails[1]}`, {
             type: 'GUILD_VOICE',
-            parentId: data.guilds[1].gameCategory,
+            position: message.guild.channels.size - 1,
             userLimit: messageDetails[2] ? messageDetails[2] : 99
         })
     }
