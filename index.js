@@ -3,7 +3,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_M
 const activityRole =  require('./commands/activityRole')
 const runActivity = new activityRole()
 const data = require("./data.json")
-import removeChannel from "./commands/removeChannel";
+const removeChannel = require("./commands/removeChannel")
 
 const prefix = '!!';
 
