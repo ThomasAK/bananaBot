@@ -15,7 +15,7 @@ module.exports = {
             userLimit: messageDetails[2] ? messageDetails[2] : 99
         })
 
-        const newChannel =await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
+        const newChannel =await message.guild.channels.cache.find(channel => channel.name === messageDetails[1]+num)
         await newChannel.setParent(data.guilds[1].gameCategory)
     }
 }
