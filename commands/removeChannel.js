@@ -5,4 +5,4 @@ class RemoveChannel {
     }
 }
 
-export default new RemoveChannel()
+module.exports =  new RemoveChannel()
