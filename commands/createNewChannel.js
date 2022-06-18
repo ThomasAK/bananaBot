@@ -5,10 +5,10 @@ module.exports = {
     description: 'This creates a new channel',
     execute(message){
         const messageDetails = message.content.split(/ +/)
-        message.guild.channels.create(`${messageDetails[1]}`, {
+        const newChannel = message.guild.channels.create(`${messageDetails[1]}`, {
             type: 'GUILD_VOICE',
-            position: message.guild.channels.cache.size - 1,
             userLimit: messageDetails[2] ? messageDetails[2] : 99
         })
+        newChannel.setParent(data.guilds[1].gameCategory).then()
     }
 }
