@@ -44,7 +44,7 @@ client.on('messageCreate', message => {
         case 'setinactive':
             client.commands.get('setInactive').execute(message).then()
             break;
-        case 'createchannel':
+        case 'createchannel' || 'cc':
             client.commands.get('createChannel').execute(message)
             break;
     }
