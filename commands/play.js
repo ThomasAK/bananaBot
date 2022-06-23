@@ -1,6 +1,7 @@
 const ytdl = require('ytdl-core')
 const ytSearch = require('yt-search')
-const {joinVoiceChannel} = require('@discordjs/voice')
+const {joinVoiceChannel, createAudioPlayer, createAudioResource} = require('@discordjs/voice')
+const player = createAudioPlayer()
 
 const queue = new Map()
 // queue(message.guild.id, queue_constuctor object {voice channel, text channel, connection, song[]})
@@ -52,12 +53,11 @@ module.exports = {
                 queue_constructor.songs.push(song);
 
                 try {
-                    const connection = await joinVoiceChannel({
+                    queue_constructor.connection = await joinVoiceChannel({
                         channelId: voice_channel.id,
                         guildId: voice_channel.guild.id,
                         adapterCreator: voice_channel.guild.voiceAdapterCreator,
                     })
-                    queue_constructor.connection = connection;
                     await video_player(message.guild, queue_constructor.songs[0])
                 } catch (err){
                     queue.delete(message.guild.id)
@@ -79,17 +79,16 @@ const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
-        await song_queue.voice_channel.leave();
+        await song_queue.voice_channel.disconnect();
         queue.delete(guild.id)
         return;
     }
 
     const stream = ytdl(song.url, {filter: 'audioonly'});
-    song_queue.connection.play(stream, {seek: 0, volume: 0.5})
-        .on('finish', () => {
-            song_queue.songs.shift();
-            video_player(guild, song_queue.songs[0]);
-        })
+    song_queue.connection.subscribe(player)
+    const resource = createAudioResource(stream, { inlineVolume: true})
+    player.play(resource)
+    song_queue.songs.shift();
     await song_queue.text_channel.send(`Now Playing ${song.title}`)
 }
 
