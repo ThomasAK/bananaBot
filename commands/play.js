@@ -1,5 +1,6 @@
 const ytdl = require('ytdl-core')
 const ytSearch = require('yt-search')
+const {joinVoiceChannel} = require('@discordjs/voice')
 
 const queue = new Map()
 // queue(message.guild.id, queue_constuctor object {voice channel, text channel, connection, song[]})
@@ -51,7 +52,11 @@ module.exports = {
                 queue_constructor.songs.push(song);
 
                 try {
-                    const connection = await voice_channel.join()
+                    const connection = await joinVoiceChannel({
+                        channelId: voice_channel.id,
+                        guildId: voice_channel.guild.id,
+                        adapterCreator: voice_channel.guild.voiceAdapterCreator,
+                    })
                     queue_constructor.connection = connection;
                     await video_player(message.guild, queue_constructor.songs[0])
                 } catch (err){
@@ -91,11 +96,11 @@ const video_player = async (guild, song) =>{
 const skipSong = (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (!server_queue) return message.channel.send('No songs in queue')
-    server_queue.connection.dispatcher.end()
+    server_queue.connection.destroy()
 }
 
 const stop_song = (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     server_queue.songs = [];
-    server_queue.connection.dispatcher.end();
+    server_queue.connection.destroy();
 }
