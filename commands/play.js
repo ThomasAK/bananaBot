@@ -79,7 +79,7 @@ const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
-        await song_queue.voice_channel.disconnect();
+        await song_queue.voice_channel.destroy();
         queue.delete(guild.id)
         return;
     }
@@ -90,9 +90,8 @@ const video_player = async (guild, song) =>{
     player.play(resource)
     player.on(AudioPlayerStatus.Idle, () => {
         song_queue.songs.shift();
-        video_player(guild, song_queue.songs[0]);
+        video_player(guild, song_queue.songs.shift());
     });
-    song_queue.songs.shift();
     await song_queue.text_channel.send(`Now Playing ${song.title}`)
 }
 
