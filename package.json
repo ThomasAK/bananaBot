@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.5.0",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "yt-search": "^2.10.3",
+    "ytdl-core": "^4.11.0"
   }
 }

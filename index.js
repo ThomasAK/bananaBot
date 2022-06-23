@@ -48,6 +48,11 @@ client.on('messageCreate', message => {
         case 'cc':
             client.commands.get('createChannel').execute(message)
             break;
+        case 'play':
+        case 'skip':
+        case 'stop':
+            client.commands.get('play').execute(message, args, command)
+            break;
     }
 })
 
