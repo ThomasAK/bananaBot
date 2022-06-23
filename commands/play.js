@@ -51,7 +51,8 @@ module.exports = {
                 queue_constructor.songs.push(song);
 
                 try {
-                    queue_constructor.connection = await voice_channel.join();
+                    const connection = await voice_channel.join()
+                    queue_constructor.connection = connection;
                     await video_player(message.guild, queue_constructor.songs[0])
                 } catch (err){
                     queue.delete(message.guild.id)
