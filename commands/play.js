@@ -71,7 +71,7 @@ module.exports = {
         }
 
         else if (cmd === 'skip') await skipSong(message, server_queue)
-        else if (cmd === 'stop') stop_song(message, server_queue)
+        else if (cmd === 'stop') await stop_song(message, server_queue)
     }
 }
 
@@ -79,7 +79,7 @@ const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
-        await song_queue.voice_channel.destroy();
+        await song_queue.connection.destroy();
         queue.delete(guild.id)
         return;
     }
@@ -102,7 +102,8 @@ const skipSong = async (message, server_queue) => {
     await video_player(message.guild, server_queue.songs.shift())
 }
 
-const stop_song = (message, server_queue) => {
+const stop_song = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
+    await server_queue.connection.destroy();
     server_queue = null
 }
