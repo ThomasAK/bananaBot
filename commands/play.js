@@ -96,7 +96,7 @@ const skipSong = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (!server_queue) return message.channel.send('No songs in queue')
     player.stop()
-    await video_player(message.guild, server_queue.shift())
+    await video_player(message.guild, server_queue.songs.shift())
 }
 
 const stop_song = (message, server_queue) => {
