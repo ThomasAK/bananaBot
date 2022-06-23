@@ -78,7 +78,7 @@ module.exports = {
 const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
-    if (!song) {
+    if (!song && song_queue.connection) {
         await song_queue.connection.destroy();
         queue.delete(guild.id)
         return;
