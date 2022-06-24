@@ -58,7 +58,7 @@ module.exports = {
                         guildId: voice_channel.guild.id,
                         adapterCreator: voice_channel.guild.voiceAdapterCreator,
                     })
-                    await video_player(message.guild, server_queue.songs.shift())
+                    await video_player(message.guild, server_queue.songs[0])
                     player.on(AudioPlayerStatus.Idle, () => {
                         video_player(message.guild, server_queue.songs.shift());
                     });
