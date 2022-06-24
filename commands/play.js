@@ -132,9 +132,9 @@ const resume_song = ()=>{
     player.unpause()
 }
 
-const song_queue = (message, server_queue)=>{
+const song_queue = async (message, server_queue)=>{
     if (!server_queue.songs) return message.channel.send('No songs in queue')
-    let string
-    server_queue.songs.forEach(song => {if (!song.title) string += `${song.title}, `})
+    let string = ''
+    await server_queue.songs.forEach(song => {if (!song.title) string += `${song.title}, `})
     message.channel.send(`Songs: ${string}`)
 }
