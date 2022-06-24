@@ -58,7 +58,10 @@ module.exports = {
                         guildId: voice_channel.guild.id,
                         adapterCreator: voice_channel.guild.voiceAdapterCreator,
                     })
-                    await video_player(message.guild, queue_constructor.songs[0])
+                    await video_player(message.guild, server_queue.songs.shift())
+                    player.on(AudioPlayerStatus.Idle, () => {
+                        video_player(message.guild, server_queue.songs.shift());
+                    });
                 } catch (err){
                     queue.delete(message.guild.id)
                     message.channel.send('There was an error connecting')
@@ -79,7 +82,6 @@ const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
-        if (!song_queue.connection.exists()) return
         await song_queue.connection.destroy();
         queue.delete(guild.id)
         return;
@@ -89,10 +91,6 @@ const video_player = async (guild, song) =>{
     song_queue.connection.subscribe(player)
     const resource = createAudioResource(stream, { inlineVolume: true})
     player.play(resource)
-    player.on(AudioPlayerStatus.Idle, () => {
-        song_queue.songs.shift();
-        video_player(guild, song_queue.songs.shift());
-    });
     await song_queue.text_channel.send(`Now Playing ${song.title}`)
 }
 
