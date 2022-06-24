@@ -51,6 +51,9 @@ client.on('messageCreate', message => {
         case 'play':
         case 'skip':
         case 'stop':
+        case 'pause':
+        case 'resume':
+        case 'queue':
             client.commands.get('play').execute(message, args, command)
             break;
     }
