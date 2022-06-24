@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core')
 const ytSearch = require('yt-search')
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice')
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, AudioPlayer} = require('@discordjs/voice')
 const player = createAudioPlayer()
 
 const queue = new Map()
@@ -123,20 +123,18 @@ const stop_song = async (message, server_queue) => {
     server_queue = null
 }
 
-const pause_song = (message)=>{
-    console.log(AudioPlayerStatus)
-    if (AudioPlayerStatus !== 'Playing') return message.channel.send('No song currently playing')
+const pause_song = ()=>{
+    console.log(AudioPlayerStatus.Playing)
     player.pause()
 }
 
-const resume_song = (message)=>{
-    if (AudioPlayerStatus !== 'Paused') return message.channel.send('Error unpausing song')
+const resume_song = ()=>{
     player.unpause()
 }
 
 const song_queue = (message, server_queue)=>{
     if (!server_queue.songs) return message.channel.send('No songs in queue')
     let string
-    server_queue.songs.forEach(song => string += `${song}, `)
+    server_queue.songs.forEach(song => {if (!song.title) string += `${song.title}, `})
     message.channel.send(`Songs: ${string}`)
 }
