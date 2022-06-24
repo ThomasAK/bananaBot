@@ -134,6 +134,6 @@ const resume_song = ()=>{
 
 const song_queue = async (message, server_queue)=>{
     if (!server_queue.songs) return message.channel.send('No songs in queue')
-    let string = server_queue.songs.map(song => {if (!song.title) return `${song.title}, `})
+    let string = server_queue.songs.map(song => {if (song.title) return `${song.title}, `})
     message.channel.send(`Songs: ${string.join('')}`)
 }
