@@ -82,6 +82,7 @@ const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
+        queue.clear()
         await song_queue.connection.destroy();
         queue.delete(guild.id)
         return;
