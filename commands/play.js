@@ -124,6 +124,7 @@ const stop_song = async (message, server_queue) => {
 }
 
 const pause_song = (message)=>{
+    console.log(AudioPlayerStatus)
     if (AudioPlayerStatus !== 'Playing') return message.channel.send('No song currently playing')
     player.pause()
 }
@@ -135,5 +136,7 @@ const resume_song = (message)=>{
 
 const song_queue = (message, server_queue)=>{
     if (!server_queue.songs) return message.channel.send('No songs in queue')
-    message.channel.send(...server_queue.songs)
+    let string
+    server_queue.songs.forEach(song => string += `${song}, `)
+    message.channel.send(`Songs: ${string}`)
 }
