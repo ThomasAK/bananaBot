@@ -5,6 +5,7 @@ module.exports = {
     description: 'This creates a new channel',
     async execute(message){
         const messageDetails = message.content.split(/ +/)
+        if (isNaN(messageDetails[2])) return message.channel.send('No spaces in channel name')
         if (message.guild.channels.cache.find(channel => channel.name === messageDetails[1])) return message.channel.send('Channel name already taken')
         await message.guild.channels.create(messageDetails[1] , {
             type: 'GUILD_VOICE',
