@@ -24,6 +24,7 @@ module.exports = {
         else if (cmd === 'pause') await pause_song(message)
         else if (cmd === 'resume') await resume_song(message)
         else if (cmd === 'queue') await song_queue(message, server_queue)
+        else if (cmd === 'clear') await clear_queue(message.guild)
     }
 }
 
@@ -36,14 +37,20 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
     else await addSongToQueue(message,server_queue,song)
 }
 
+//Clear queue and remove bot from channel
+
+const clear_queue = async (guild) => {
+    queue.delete(guild.id)
+    await song_queue.connection.destroy();
+    return;
+}
+
 //Create song resource then play song.
 const video_player = async (guild, song) =>{
     const song_queue = queue.get(guild.id)
 
     if (!song) {
-        queue.delete(guild.id)
-        await song_queue.connection.destroy();
-        return;
+        await clear_queue(guild)
     }
 
     const stream = ytdl(song.url, {filter: 'audioonly'});
