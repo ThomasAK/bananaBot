@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core')
 const ytSearch = require('yt-search')
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, AudioPlayer} = require('@discordjs/voice')
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice')
 const player = createAudioPlayer()
 
 const queue = new Map()
@@ -8,7 +8,7 @@ const queue = new Map()
 module.exports = {
     name: 'play',
     aliases: ['skip', 'stop'],
-    cooldown: 0,
+    coolDown: 0,
     async execute(message, args, cmd){
 
         const voice_channel = message.member.voice.channel;
@@ -42,7 +42,6 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
 
 const clear_queue = async (guild) => {
     queue.delete(guild.id)
-    return;
 }
 
 //Create song resource then play song.
@@ -56,7 +55,7 @@ const video_player = async (guild, song) =>{
 
     const stream = ytdl(song.url, {filter: 'audioonly'});
     song_queue.connection.subscribe(player)
-    const resource = createAudioResource(stream, { inlineVolume: true})
+    const resource = createAudioResource(stream)
     player.play(resource)
     await song_queue.text_channel.send(`Now Playing ${song.title}`)
 }
