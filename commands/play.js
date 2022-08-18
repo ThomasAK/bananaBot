@@ -20,7 +20,7 @@ module.exports = {
 
         if (cmd === 'play') await setUpSong(message, args, server_queue, voice_channel)
         else if (cmd === 'skip') await skipSong(message, server_queue)
-        else if (cmd === 'stop') await stop_song(message, server_queue)
+        else if (cmd === 'leave') await stop_song(message, server_queue)
         else if (cmd === 'pause') await pause_song(message)
         else if (cmd === 'resume') await resume_song(message)
         else if (cmd === 'queue') await song_queue(message, server_queue)
@@ -126,7 +126,7 @@ const skipSong = async (message, server_queue) => {
 const stop_song = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     await server_queue.connection.destroy();
-    server_queue = null
+    await clear_queue(message.guild)
 }
 
 const pause_song = ()=>{

@@ -50,7 +50,7 @@ client.on('messageCreate', message => {
             break;
         case 'play':
         case 'skip':
-        case 'stop':
+        case 'leave':
         case 'pause':
         case 'resume':
         case 'clear':
