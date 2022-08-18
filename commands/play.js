@@ -33,6 +33,7 @@ module.exports = {
 const setUpSong = async (message, args, server_queue, voice_channel) => {
     if (!args.length) return message.channel.send('You need to add the song you want')
     let song = await getSongURL(message, args);
+    if (!voice_channel.members.find(user => user === message.client.user)) await clear_queue(message.guild)
     if (!server_queue) await setUpServerQueue(message, voice_channel, song)
     else await addSongToQueue(message,server_queue,song)
 }
@@ -41,7 +42,6 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
 
 const clear_queue = async (guild) => {
     queue.delete(guild.id)
-    await song_queue.connection.destroy();
     return;
 }
 
@@ -51,6 +51,7 @@ const video_player = async (guild, song) =>{
 
     if (!song) {
         await clear_queue(guild)
+        await song_queue.connection.destroy();
     }
 
     const stream = ytdl(song.url, {filter: 'audioonly'});
