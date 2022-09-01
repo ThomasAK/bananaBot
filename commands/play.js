@@ -44,18 +44,18 @@ const clear_queue = async (guild) => {
 }
 
 //Create song resource then play song.
-const video_player = async (guild, song) =>{
-    const song_queue = queue.get(guild.id)
+const video_player = async (message, song) =>{
+    const song_queue = queue.get(message.guild.id)
 
     if (!song) {
-        await clear_queue(guild)
+        await clear_queue(message.guild)
         await song_queue.connection.destroy();
     }
 
     const stream = ytdl(song.url, {filter: 'audioonly'});
     const resource = createAudioResource(stream)
     player.play(resource)
-    await song_queue.text_channel.send(`Now Playing ${song.title}`)
+    await message.channel.send(`Now Playing ${song.title}`)
 }
 
 //If args[0] is a url then get info through url and pass it back.
@@ -100,9 +100,9 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             adapterCreator: voice_channel.guild.voiceAdapterCreator,
         })
         server_queue.connection.subscribe(player)
-        await video_player(message.guild, server_queue.songs.shift())
+        await video_player(message, server_queue.songs.shift())
         player.on(AudioPlayerStatus.Idle, () => {
-            video_player(message.guild, server_queue.songs.shift());
+            video_player(message, server_queue.songs.shift());
         });
     } catch (err){
         queue.delete(message.guild.id)
@@ -120,7 +120,7 @@ const skipSong = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (!server_queue) return message.channel.send('No songs in queue')
     player.stop()
-    await video_player(message.guild, server_queue.songs.shift())
+    await video_player(message, server_queue.songs.shift())
 }
 
 const stop_song = async (message, server_queue) => {
