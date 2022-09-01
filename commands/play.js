@@ -91,18 +91,18 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
     }
 
     queue.set(message.guild.id, queue_constructor);
-    queue_constructor.songs.push(song);
-
+    const server_queue = queue.get(message.guild.id)
+    server_queue.songs.push(song)
     try {
-        queue_constructor.connection = await joinVoiceChannel({
+        server_queue.connection = await joinVoiceChannel({
             channelId: voice_channel.id,
             guildId: voice_channel.guild.id,
             adapterCreator: voice_channel.guild.voiceAdapterCreator,
         })
-        queue_constructor.connection.subscribe(player)
-        await video_player(message.guild, queue_constructor.songs.shift())
+        server_queue.connection.subscribe(player)
+        await video_player(message.guild, server_queue.songs.shift())
         player.on(AudioPlayerStatus.Idle, () => {
-            video_player(message.guild, queue_constructor.songs.shift());
+            video_player(message.guild, server_queue.songs.shift());
         });
     } catch (err){
         queue.delete(message.guild.id)
@@ -125,8 +125,9 @@ const skipSong = async (message, server_queue) => {
 
 const stop_song = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
-    await server_queue.connection.destroy();
+    if (!server_queue.connection) return message.channel.send('Bot not connected. ')
     await clear_queue(message.guild)
+    await server_queue.connection.destroy();
 }
 
 const pause_song = ()=>{
