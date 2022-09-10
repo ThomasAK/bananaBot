@@ -4,7 +4,7 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStat
 const player = createAudioPlayer()
 
 const queue = new Map()
-// queue(message.guild.id, queue_constuctor object {voice channel, text channel, connection, song[]})
+// queue(message.guild.id, queue_constructor object {voice channel, text channel, connection, song[]})
 module.exports = {
     name: 'play',
     aliases: ['skip', 'stop'],
@@ -58,8 +58,8 @@ const video_player = async (message, song) =>{
     await message.channel.send(`Now Playing ${song.title}`)
 }
 
-//If args[0] is a url then get info through url and pass it back.
-//If args[0] is not a url locate song in youtube then collect URL and then pass song info back
+//If args[0] is  url then get info through url and pass it back.
+//If args[0] is not url locate song in YouTube then collect URL and then pass song info back
 const getSongURL = async (message, args)=>{
     if (ytdl.validateURL(args[0])) {
         const song_info = await ytdl.getInfo(args[0]);
