@@ -52,9 +52,9 @@ const video_player = async (message, song) =>{
         await song_queue.connection.destroy();
     }
 
-    const stream = ytdl(song.url, {filter: 'audioonly'});
-    const resource = createAudioResource(stream)
-    player.play(resource)
+    const stream = await ytdl(song.url, {filter: 'audioonly'});
+    const resource = await createAudioResource(stream)
+    await player.play(resource)
     await message.channel.send(`Now Playing ${song.title}`)
 }
 
@@ -101,8 +101,11 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         })
         server_queue.connection.subscribe(player)
         await video_player(message, server_queue.songs.shift())
-        player.on(AudioPlayerStatus.Idle, () => {
-            video_player(message, server_queue.songs.shift());
+        player.on('error', error => {
+            console.error(error);
+        });
+        player.on(AudioPlayerStatus.Idle, async () => {
+            await video_player(message, server_queue.songs.shift());
         });
     } catch (err){
         queue.delete(message.guild.id)
