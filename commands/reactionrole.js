@@ -7,7 +7,7 @@ module.exports = {
     async reactionRoleAdd (reaction, user) {
         const guild = await data.guilds.find(guild => guild.name === reaction.message.guild.name)
         if (!guild) return
-        if(!guild.rolesChannel.find(reaction.message.channel.id)) return
+        if(!guild.rolesChannel.find(channelid => channelid == reaction.message.channel.id)) return
         const role = roles.find(role => role.emoji === reaction.emoji.name)
         await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(r => r.name === role.name))
 
@@ -15,7 +15,7 @@ module.exports = {
     async reactionRoleRemove (reaction, user) {
         const guild = await data.guilds.find(guild => guild.name === reaction.message.guild.name)
         if (!guild) return
-        if(!guild.rolesChannel.find(reaction.message.channel.id)) return
+        if(!guild.rolesChannel.find(channelid => channelid == reaction.message.channel.id)) return
         const role = roles.find(role => role.emoji === reaction.emoji.name)
         await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(r => r.name === role.name))
     }
