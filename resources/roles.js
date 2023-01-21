@@ -21,6 +21,9 @@ module.exports = {
         name: 'Streamers',
         emoji: '🎥'
     }, {
+        name: 'AOE',
+        emoji: ':horse:'
+    }, {
         name: 'Player',
         emoji: '✅'
     }
