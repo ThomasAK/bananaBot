@@ -1,4 +1,4 @@
-const { Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const { Client, Intents, Collection, EmbedBuilder} = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER'] });
 const activityRole =  require('./commands/activityRole')
 const runActivity = new activityRole()
@@ -32,7 +32,7 @@ client.on('messageCreate', message => {
             break;
 
         case 'reactionrole':
-            client.commands.get('reactionrolesetup').execute(message, MessageEmbed);
+            client.commands.get('reactionrolesetup').execute(message, EmbedBuilder);
             break;
         case 'timeout':
             const user = args.shift()
