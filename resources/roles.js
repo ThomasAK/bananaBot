@@ -1,6 +1,6 @@
 module.exports = {
     roles: [{
-        name: 'Halo',
+        name: 'RocketLeague',
         emoji: '🛰'
     }, {
         name: 'WZ',
@@ -9,23 +9,17 @@ module.exports = {
         name: 'COD',
         emoji: '💊'
     }, {
-        name: 'BF',
+        name: 'Overwatch',
         emoji: '🧬'
     }, {
-        name: 'GTA',
+        name: 'LoL',
         emoji: '🚓'
-    }, {
-        name: 'Streamers',
-        emoji: '🎥'
-    }, {
-        name: 'EFT',
-        emoji: '💸'
     }, {
         name: 'APEX',
         emoji: '🎇'
     }, {
-        name: 'Player',
-        emoji: '✅'
+        name: 'Streamers',
+        emoji: '🎥'
     }
     ]
 }
