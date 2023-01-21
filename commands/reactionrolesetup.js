@@ -13,7 +13,7 @@ module.exports = {
             .setTitle('Select Roles')
             .setDescription(description);
         console.log(embed)
-        let messageEmbed = await message.channel.send({embed: embed});
+        let messageEmbed = await message.channel.send({embed: [embed]});
         roles.forEach(role => {
             messageEmbed.react(role.emoji)
         })
