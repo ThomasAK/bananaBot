@@ -3,11 +3,12 @@ module.exports = {
     name: 'reactionrolesetup',
     description: 'set role based on reaction',
     async execute(message, MessageEmbed) {
-        let description = 'These roles will give you access to the different channels we have and will make it so you get pinged when people are lfg for that game.\n\n'
+        let description = 'These roles are here so that users can lfg using @ for specific games so select the games you ' +
+            'would like to be notified for.\n\n'
         roles.forEach(role => {
             description +=  `|${role.emoji} for ${role.name} Role| \n`
         })
-        let embed = new MessageEmbed()
+        let embed = await new MessageEmbed()
             .setColor('#e42643')
             .setTitle('Select Roles')
             .setDescription(description)
