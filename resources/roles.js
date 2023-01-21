@@ -22,7 +22,7 @@ module.exports = {
         emoji: '🎥'
     }, {
         name: 'AOE',
-        emoji: ':horse:'
+        emoji: '🏇'
     }, {
         name: 'Player',
         emoji: '✅'
