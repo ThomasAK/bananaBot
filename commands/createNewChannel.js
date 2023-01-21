@@ -13,7 +13,7 @@ module.exports = {
             bitrate: 128000
         })
 
-        const newChannel =await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
+        const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
         await newChannel.setParent(data.guilds[1].gameCategory)
     }
 }
