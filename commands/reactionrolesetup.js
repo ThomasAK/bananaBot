@@ -1,5 +1,5 @@
 const roles = require('../resources/roles').roles
-const { EmbedBuilder } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'reactionrolesetup',
     description: 'set role based on reaction',
@@ -9,12 +9,12 @@ module.exports = {
         await roles.forEach(role => {
             description +=  `|${role.emoji} for ${role.name} Role| \n`
         })
-        let embed = new EmbedBuilder()
+        let embed = new MessageEmbed()
             .setColor('#e42643')
             .setTitle('Select Roles')
             .setDescription(description);
         console.log(embed)
-        let messageEmbed = await message.channel.send({embed: [embed]});
+        let messageEmbed = await message.channel.send({embeds: [embed]});
         roles.forEach(role => {
             messageEmbed.react(role.emoji)
         })
