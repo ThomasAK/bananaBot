@@ -5,10 +5,10 @@ module.exports = {
     async execute(message, MessageEmbed) {
         let description = 'These roles are here so that users can lfg using @ for specific games so select the games you ' +
             'would like to be notified for.\n\n'
-        roles.forEach(role => {
+        await roles.forEach(role => {
             description +=  `|${role.emoji} for ${role.name} Role| \n`
         })
-        let embed = await new MessageEmbed()
+        let embed = new MessageEmbed()
             .setColor('#e42643')
             .setTitle('Select Roles')
             .setDescription(description)
