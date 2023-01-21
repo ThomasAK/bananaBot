@@ -1,14 +1,15 @@
 const roles = require('../resources/roles').roles
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'reactionrolesetup',
     description: 'set role based on reaction',
-    async execute(message, MessageEmbed) {
+    async execute(message) {
         let description = 'These roles are here so that users can lfg using @ for specific games so select the games you ' +
             'would like to be notified for.\n\n'
         await roles.forEach(role => {
             description +=  `|${role.emoji} for ${role.name} Role| \n`
         })
-        let embed = new MessageEmbed()
+        let embed = new EmbedBuilder()
             .setColor('#e42643')
             .setTitle('Select Roles')
             .setDescription(description);
