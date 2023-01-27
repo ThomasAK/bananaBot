@@ -14,6 +14,6 @@ module.exports = {
         })
 
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
-        await newChannel.setParent(data.guilds[1].gameCategory)
+        await newChannel.setParent(data.guilds[0].gameCategory)
     }
 }
