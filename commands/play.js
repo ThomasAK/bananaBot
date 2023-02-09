@@ -32,7 +32,7 @@ module.exports = {
 //If server_queue is set up then add song to queue.
 const setUpSong = async (message, args, server_queue, voice_channel) => {
     if (!args.length) return message.channel.send('You need to add the song you want')
-    let song = await getSongURL(message, args);
+    const song = await getSongURL(message, args);
     if (!server_queue) await setUpServerQueue(message, voice_channel, song)
     else await addSongToQueue(message,server_queue,song)
 }
@@ -90,7 +90,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         songs: []
     }
 
-    queue.set(message.guild.id, queue_constructor);
+    await queue.set(message.guild.id, queue_constructor);
     const server_queue = queue.get(message.guild.id)
     server_queue.songs.push(song)
     try {
@@ -99,9 +99,9 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             guildId: voice_channel.guild.id,
             adapterCreator: voice_channel.guild.voiceAdapterCreator,
         })
-        server_queue.connection.subscribe(player)
+        await server_queue.connection.subscribe(player)
         await video_player(message, server_queue.songs.shift())
-        player.on('error', error => {
+        await player.on('error', error => {
             console.error(error);
         });
         player.on(AudioPlayerStatus.Idle, async () => {
