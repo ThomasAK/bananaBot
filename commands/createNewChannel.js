@@ -15,7 +15,6 @@ module.exports = {
         })
 
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
-        console.log(currentGuild.gameCategory)
         await newChannel.setParent(currentGuild.gameCategory)
 
         let result = false;
@@ -38,10 +37,11 @@ module.exports = {
                 return new Promise(poll)
             }
 
-        Promise.race([timeout(15), waitForPlayer()]).then(res => {
-            console.log(result)
-            if (!result) newChannel.delete('channel empty')
-        })
-
+        Promise.race([timeout(15), waitForPlayer()])
+            .then(res => console.log(result))
+            .catch(err => {
+                console.log(err)
+                if (!result) newChannel.delete('channel empty')
+            })
     }
 }
