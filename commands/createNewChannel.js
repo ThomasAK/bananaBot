@@ -39,7 +39,7 @@ module.exports = {
             }
 
         Promise.race([timeout(15), waitForPlayer()]).then(res => {
-            console.error(result)
+            console.log(result)
             if (!result) newChannel.delete('channel empty')
         })
 
