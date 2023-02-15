@@ -15,6 +15,7 @@ module.exports = {
         })
 
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
+        console.log(currentGuild.gameCategory)
         await newChannel.setParent(currentGuild.gameCategory)
     }
 }
