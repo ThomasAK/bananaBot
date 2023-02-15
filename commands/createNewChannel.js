@@ -4,6 +4,7 @@ module.exports = {
     name: 'createChannel',
     description: 'This creates a new channel',
     async execute(message){
+        const currentGuild = data.guilds.find(guild => guild.name = message.guild.name)
         const messageDetails = message.content.split(/ +/)
         if (messageDetails[2] && isNaN(messageDetails[2])) return message.channel.send('No spaces in channel name')
         if (message.guild.channels.cache.find(channel => channel.name === messageDetails[1])) return message.channel.send('Channel name already taken')
@@ -14,6 +15,6 @@ module.exports = {
         })
 
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
-        await newChannel.setParent(data.guilds[0].gameCategory)
+        await newChannel.setParent(currentGuild.gameCategory)
     }
 }
