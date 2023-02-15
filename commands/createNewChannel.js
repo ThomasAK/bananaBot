@@ -17,5 +17,27 @@ module.exports = {
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
         console.log(currentGuild.gameCategory)
         await newChannel.setParent(currentGuild.gameCategory)
+
+        let result = false;
+        const timeout = function (sec){
+            return new Promise(function (_, reject){
+                setTimeout(function (){
+                   reject(new Error('No one joined the channel within 15 seconds'))
+                }, sec*1000)
+            })
+        }
+
+        const waitForPlayer = function () {
+                const poll  = resolve => {
+                    if (newChannel.members.size > 0) {
+                        result = true;
+                        resolve()
+                    }
+                    else setTimeout(_ => poll(resolve), 400)
+                }
+                return new Promise(poll)
+            }
+        await Promise.race([timeout(15), waitForPlayer()])
+        if (result === false) newChannel.delete('channel empty')
     }
 }
