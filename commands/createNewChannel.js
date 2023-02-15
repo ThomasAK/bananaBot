@@ -37,7 +37,8 @@ module.exports = {
                 }
                 return new Promise(poll)
             }
-        await Promise.race([timeout(15), waitForPlayer()])
-        if (result === false) newChannel.delete('channel empty')
+
+        Promise.race([timeout(15), waitForPlayer()]).then(res => {if (result === false) newChannel.delete('channel empty')})
+
     }
 }
