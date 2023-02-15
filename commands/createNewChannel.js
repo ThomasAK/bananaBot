@@ -10,7 +10,7 @@ module.exports = {
         await message.guild.channels.create(messageDetails[1] , {
             type: 'GUILD_VOICE',
             userLimit: messageDetails[2] ? messageDetails[2] : 0,
-            bitrate: 256000
+            bitrate: data.bitrate
         })
 
         const newChannel = await message.guild.channels.cache.find(channel => channel.name === messageDetails[1])
