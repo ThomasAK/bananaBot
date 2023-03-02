@@ -24,6 +24,12 @@ module.exports = {
         name: 'AOE',
         emoji: '🏇'
     }, {
+        name: 'Halo',
+        emoji: '👽'
+    }, {
+        name: 'RankedMW',
+        emoji: '😈'
+    }, {
         name: 'Player',
         emoji: '✅'
     }
