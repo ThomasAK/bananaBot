@@ -62,7 +62,7 @@ client.on('messageCreate', message => {
             break;
         case 'guilds':
             const Guilds = client.guilds.cache.map(guild => guild.id);
-            message.channel.send(Guilds)
+            message.channel.send(`Servers: ${Guilds.join(',')}`)
             break;
     }
 })
