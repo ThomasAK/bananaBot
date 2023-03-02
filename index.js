@@ -1,5 +1,5 @@
 const { Client, Intents, Collection} = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER'] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER','GUILDS'] });
 const activityRole =  require('./commands/activityRole')
 //const runActivity = new activityRole()
 const data = require("./data.json")
@@ -59,6 +59,11 @@ client.on('messageCreate', message => {
             break;
         case 'roll':
             client.commands.get('roll').execute(message)
+            break;
+        case 'guilds':
+            const Guilds = client.guilds.cache.map(guild => guild.id);
+            message.channel.send(Guilds)
+            break;
     }
 })
 
