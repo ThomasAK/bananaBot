@@ -46,7 +46,7 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    const song_queue = queue.get(message.guild.id)
+    const song_queue = await queue.get(message.guild.id)
 
     console.log(`SONG: ${song.title}  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
 
@@ -103,13 +103,13 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             adapterCreator: voice_channel.guild.voiceAdapterCreator,
         })
         await server_queue.connection.subscribe(player)
-        await video_player(message, server_queue.songs.shift())
+        await video_player(message, await server_queue.songs.shift())
         await player.on('error', error => {
             console.error(error);
         });
         player.on(AudioPlayerStatus.Idle, async () => {
             console.log(queue)
-            await video_player(message, server_queue.songs.shift());
+            await video_player(message, await server_queue.songs.shift());
         });
     } catch (err){
         queue.delete(message.guild.id)
