@@ -9,10 +9,6 @@ const prefix = '!!';
 
 const fs = require('fs');
 
-const embed = new MessageEmbed()
-    .setDescription('!! is not a command please try again Rugy!')
-    .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
-
 client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -69,7 +65,11 @@ client.on('messageCreate', message => {
             message.channel.send(`Servers: ${Guilds.join(',')}`)
             break;
         case '':
+            const embed = new MessageEmbed()
+                .setDescription(`!! is not a command please try again ${message.author.displayName}!`)
+                .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
             message.channel.send({embeds: [embed]})
+            break;
     }
 })
 
