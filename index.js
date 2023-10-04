@@ -21,7 +21,7 @@ client.on('ready', () => {
     console.log('Mr Bot is online!')
 })
 
-client.on('messageCreate', message => {
+client.on('messageCreate',  message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
@@ -66,7 +66,7 @@ client.on('messageCreate', message => {
             break;
         case '':
             const embed = new MessageEmbed()
-                .setDescription(`!! is not a command please try again ${message.author.displayName}!`)
+                .setDescription(`!! is not a command please try again ${message.member.displayName}!`)
                 .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
             message.channel.send({embeds: [embed]})
             break;
