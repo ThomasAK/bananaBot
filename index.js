@@ -69,8 +69,7 @@ client.on('messageCreate', message => {
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
     //if (oldState.channel == null && newState != null) await runActivity.updateStatus(newState)
-    console.log(oldState)
-    if (!oldState.guild.name) return
+    if (!oldState.channelId) return
     const guildList = ['Sans Pareil', 'TheBananaBoys']
     if (oldState.channel !== newState.channel && guildList.find( guild => guild === oldState.channel.guild.name)) await removeChannel.execute(oldState)
 })
