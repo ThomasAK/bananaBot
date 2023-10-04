@@ -35,6 +35,7 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
     const song = await getSongURL(message, args);
     if (!server_queue) await setUpServerQueue(message, voice_channel, song)
     else await addSongToQueue(message,server_queue,song)
+    console.log(queue)
 }
 
 //Clear queue and remove bot from channel
@@ -107,6 +108,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             console.error(error);
         });
         player.on(AudioPlayerStatus.Idle, async () => {
+            console.log(queue)
             await video_player(message, server_queue.songs.shift());
         });
     } catch (err){
