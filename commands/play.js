@@ -47,7 +47,7 @@ const clear_queue = async (guild) => {
 const video_player = async (message, song) =>{
     const song_queue = queue.get(message.guild.id)
 
-    console.log(`SONG: ${song}  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
+    console.log(`SONG: ${song.title}  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
 
     if (!song) {
         await clear_queue(message.guild)
