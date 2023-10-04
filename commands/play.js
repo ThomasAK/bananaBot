@@ -50,6 +50,7 @@ const video_player = async (message, song) =>{
     if (!song) {
         await clear_queue(message.guild)
         await song_queue.connection.destroy();
+        return
     }
 
     const stream = await ytdl(song.url, {filter: 'audioonly'});
