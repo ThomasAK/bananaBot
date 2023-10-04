@@ -1,4 +1,4 @@
-const { Client, Intents, Collection} = require('discord.js');
+const { Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER','GUILDS'] });
 const activityRole =  require('./commands/activityRole')
 //const runActivity = new activityRole()
@@ -8,6 +8,10 @@ const removeChannel = require("./commands/removeChannel")
 const prefix = '!!';
 
 const fs = require('fs');
+
+const embed = new MessageEmbed()
+    .description('!! is not a command please try again Rugy!')
+    .attachFiles(["https://giphy.com/clips/comedycentral-comedy-central-key-and-peele-UlB399CXsQEhFlYYP6"]);
 
 client.commands = new Collection();
 
@@ -64,6 +68,8 @@ client.on('messageCreate', message => {
             const Guilds = client.guilds.cache.map(guild => guild.id);
             message.channel.send(`Servers: ${Guilds.join(',')}`)
             break;
+        case '':
+            message.channel.send({embeds: [embed]})
     }
 })
 

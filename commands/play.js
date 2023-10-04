@@ -49,6 +49,7 @@ const video_player = async (message, song) =>{
 
     if (!song) {
         await clear_queue(message.guild)
+        player.stop()
         await song_queue.connection.destroy();
         return
     }
