@@ -64,9 +64,12 @@ client.on('messageCreate',  message => {
             const Guilds = client.guilds.cache.map(guild => guild.id);
             message.channel.send(`Servers: ${Guilds.join(',')}`)
             break;
-        case '':
+        case 'commands':
+            message.channel.send('!!play !!skip !!pause !!resume !!clear !!queue !!leave \n !!roll')
+            break;
+        default:
             const embed = new MessageEmbed()
-                .setDescription(`!! is not a command please try again ${message.member.displayName}!`)
+                .setDescription(`${command} is not a command please try again ${message.member.displayName}! \n To see a list of commands use !!commands.`)
                 .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
             message.channel.send({embeds: [embed]})
             break;
