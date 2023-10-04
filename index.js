@@ -11,7 +11,7 @@ const fs = require('fs');
 
 const embed = new MessageEmbed()
     .setDescription('!! is not a command please try again Rugy!')
-    .setImage("https://giphy.com/clips/comedycentral-comedy-central-key-and-peele-UlB399CXsQEhFlYYP6");
+    .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
 
 client.commands = new Collection();
 
