@@ -35,7 +35,6 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
     const song = await getSongURL(message, args);
     if (!server_queue) await setUpServerQueue(message, voice_channel, song)
     else await addSongToQueue(message,server_queue,song)
-    console.log(server_queue.songs)
 }
 
 //Clear queue and remove bot from channel
@@ -47,8 +46,6 @@ const clear_queue = async (guild) => {
 //Create song resource then play song.
 const video_player = async (message, song) =>{
     const song_queue = await queue.get(message.guild.id)
-
-    console.log(`SONG: ${song.title}  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
 
     if (!song) {
         await clear_queue(message.guild)
@@ -108,7 +105,6 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             console.error(error);
         });
         player.on(AudioPlayerStatus.Idle, async () => {
-            console.log(server_queue.songs)
             await video_player(message, await server_queue.songs.shift());
         });
     } catch (err){
