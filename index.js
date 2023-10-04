@@ -69,7 +69,7 @@ client.on('messageCreate', message => {
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
     //if (oldState.channel == null && newState != null) await runActivity.updateStatus(newState)
-    if (oldState.channel !== newState.channel && oldState.channel.name) await removeChannel.execute(oldState)
+    if (oldState.channel !== newState.channel) await removeChannel.execute(oldState)
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
