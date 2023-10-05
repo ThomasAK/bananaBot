@@ -49,7 +49,7 @@ const video_player = async (message, song) =>{
 
     if (!song) {
         await clear_queue(message.guild)
-        player.stop()
+        console.log('Destroying Connection')
         await song_queue.connection.destroy();
         return
     }
@@ -103,10 +103,12 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         })
         await server_queue.connection.subscribe(player)
         await video_player(message, await server_queue.songs.shift())
-        await player.on('error', error => {
+        await player.on('error', async error => {
             console.error(error);
+            await video_player(message, await server_queue.songs.shift())
         });
         player.on(AudioPlayerStatus.Idle, async () => {
+            console.log(server_queue.songs)
             await video_player(message, await server_queue.songs.shift());
         });
     } catch (err){
