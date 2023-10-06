@@ -69,7 +69,7 @@ client.on('messageCreate',  message => {
             break;
         default:
             const embed = new MessageEmbed()
-                .setDescription(`${command} is not a command please try again ${message.member.displayName}! \n To see a list of commands use !!commands.`)
+                .setDescription(`!!${command} is not a command please try again ${message.member.displayName}! \n To see a list of commands use !!commands.`)
                 .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
             message.channel.send({embeds: [embed]})
             break;
