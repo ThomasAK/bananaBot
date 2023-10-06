@@ -47,7 +47,7 @@ const clear_queue = async (guild) => {
 const video_player = async (message, song) =>{
     const song_queue = await queue.get(message.guild.id)
 
-    console.log(song.title)
+    console.log(song)
 
     if (!song) {
         console.log('connection destroyed.')
