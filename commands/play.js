@@ -96,8 +96,8 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await video_player(message, await server_queue.songs.shift())
         await player.on('error', async error => {
             if (!server_queue.songs[0]) {
+                await server_queue.connection.destroy();
                 await clear_queue(message.guild)
-                await song_queue.connection.destroy();
                 return
             }
             console.error(error);
@@ -106,8 +106,8 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await player.on(AudioPlayerStatus.Idle, async () => {
             console.log(server_queue.songs)
             if (!server_queue.songs[0]) {
+                await server_queue.connection.destroy();
                 await clear_queue(message.guild)
-                await song_queue.connection.destroy();
                 return
             }
             await video_player(message, await server_queue.songs.shift());
@@ -135,8 +135,8 @@ const skipSong = async (message, server_queue) => {
 const stop_song = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (!server_queue.connection) return message.channel.send('Bot not connected. ')
-    await clear_queue(message.guild)
     await server_queue.connection.destroy();
+    await clear_queue(message.guild)
 }
 
 const pause_song = ()=>{
