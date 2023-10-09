@@ -45,7 +45,7 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    //const song_queue = await queue.get(message.guild.id)
+    const server_queue = await queue.get(message.guild.id)
 
     /*console.log(song)
 
@@ -60,6 +60,14 @@ const video_player = async (message, song) =>{
     const resource = await createAudioResource(stream)
     await player.play(resource)
     await message.channel.send(`Now Playing ${song.title}`)
+    player.on(AudioPlayerStatus.Idle, async () => {
+        console.log(server_queue.songs)
+        if (!server_queue.songs[0]) {
+            await stop_song(message, server_queue)
+            return
+        }
+        await video_player(message, server_queue.songs.shift());
+    });
 }
 
 //If args[0] is  url then get info through url and pass it back.
@@ -108,14 +116,6 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await player.on('error', async error => {
             console.error(error);
             await video_player(message, await server_queue.songs.shift())
-            player.on(AudioPlayerStatus.Idle, async () => {
-                console.log(server_queue.songs)
-                if (!server_queue.songs[0]) {
-                    await stop_song(message, server_queue)
-                    return
-                }
-                await video_player(message, server_queue.songs.shift());
-            });
         });
 
     } catch (err){
