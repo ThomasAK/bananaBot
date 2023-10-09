@@ -45,29 +45,10 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    const server_queue = await queue.get(message.guild.id)
-
-    /*console.log(song)
-
-    if (!song) {
-        console.log('connection destroyed.')
-        await clear_queue(message.guild)
-        await song_queue.connection.destroy();
-        return
-    }*/
-
     const stream = await ytdl(song.url, {filter: 'audioonly'});
     const resource = await createAudioResource(stream)
     await player.play(resource)
     await message.channel.send(`Now Playing ${song.title}`)
-    player.on(AudioPlayerStatus.Idle, async () => {
-        console.log(server_queue.songs)
-        if (!server_queue.songs[0]) {
-            await stop_song(message, server_queue)
-            return
-        }
-        await video_player(message, server_queue.songs.shift());
-    });
 }
 
 //If args[0] is  url then get info through url and pass it back.
@@ -114,8 +95,22 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await server_queue.connection.subscribe(player)
         await video_player(message, await server_queue.songs.shift())
         await player.on('error', async error => {
+            if (!server_queue.songs[0]) {
+                await clear_queue(message.guild)
+                await song_queue.connection.destroy();
+                return
+            }
             console.error(error);
             await video_player(message, await server_queue.songs.shift())
+        });
+        await player.on(AudioPlayerStatus.Idle, async () => {
+            console.log(server_queue.songs)
+            if (!server_queue.songs[0]) {
+                await clear_queue(message.guild)
+                await song_queue.connection.destroy();
+                return
+            }
+            await video_player(message, await server_queue.songs.shift());
         });
 
     } catch (err){
