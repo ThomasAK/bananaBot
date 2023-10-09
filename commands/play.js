@@ -108,15 +108,16 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await player.on('error', async error => {
             console.error(error);
             await video_player(message, await server_queue.songs.shift())
+            player.on(AudioPlayerStatus.Idle, async () => {
+                console.log(server_queue.songs)
+                if (!server_queue.songs[0]) {
+                    await stop_song(message, server_queue)
+                    return
+                }
+                await video_player(message, server_queue.songs.shift());
+            });
         });
-        player.on(AudioPlayerStatus.Idle, async () => {
-            console.log(server_queue.songs)
-            if (!server_queue.songs[0]) {
-                await stop_song(message, server_queue)
-                return
-            }
-            await video_player(message, server_queue.songs.shift());
-        });
+
     } catch (err){
         queue.delete(message.guild.id)
         message.channel.send('There was an error connecting')
