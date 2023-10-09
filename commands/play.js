@@ -45,16 +45,16 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    const song_queue = await queue.get(message.guild.id)
+    //const song_queue = await queue.get(message.guild.id)
 
-    console.log(song)
+    /*console.log(song)
 
     if (!song) {
         console.log('connection destroyed.')
         await clear_queue(message.guild)
         await song_queue.connection.destroy();
         return
-    }
+    }*/
 
     const stream = await ytdl(song.url, {filter: 'audioonly'});
     const resource = await createAudioResource(stream)
@@ -111,6 +111,10 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         });
         player.on(AudioPlayerStatus.Idle, async () => {
             console.log(server_queue.songs)
+            if (!server_queue.songs[0]) {
+                await stop_song(message, server_queue)
+                return
+            }
             await video_player(message, server_queue.songs.shift());
         });
     } catch (err){
