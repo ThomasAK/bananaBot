@@ -71,7 +71,6 @@ const getSongURL = async (message, args)=>{
 
         const video = await video_finder(args.join(' '));
         if (video) {
-            console.log(video)
             return  {title: video.title, url: video.url}
         } else {
             message.channel.send('Unable to find video');
@@ -148,7 +147,6 @@ const stop_song = async (message, server_queue) => {
 }
 
 const pause_song = ()=>{
-    console.log(AudioPlayerStatus.Playing)
     player.pause()
 }
 
