@@ -45,7 +45,7 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    const stream = await ytdl(song.url, {filter: 'audioonly'});
+    const stream = await ytdl(await song.url, {filter: 'audioonly'});
     const resource = await createAudioResource(stream)
     await player.play(resource)
     await message.channel.send(`Now Playing ${song.title}`)
@@ -65,7 +65,7 @@ const getSongURL = async (message, args)=>{
         }
 
         const video = await video_finder(args.join(' '));
-        if (video) {
+        if (video.url) {
             return  {title: video.title, url: video.url}
         } else {
             message.channel.send('Unable to find video');
