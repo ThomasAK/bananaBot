@@ -51,8 +51,8 @@ const video_player = async (message, song) =>{
         await player.play(resource)
         await message.channel.send(`Now Playing ${song.title}`)
     }catch (err) {
-        console.log(err)
-        message.channel.send('Song failed to play.v')
+        console.log(`${err} video_player failure?`)
+        message.channel.send('Song failed to play.')
     }
 }
 
@@ -101,7 +101,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await video_player(message, await server_queue.songs.shift())
         await sleep(1000)
         await player.on('error', async error => {
-            console.error(error);
+            console.error(`${error} audio player Error.......`);
             message.channel.send(`Song Failed to play try different song.`)
             if (!server_queue.songs[0]) {
                 await server_queue.connection.destroy();
