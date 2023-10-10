@@ -2,6 +2,7 @@ const ytdl = require('ytdl-core')
 const ytSearch = require('yt-search')
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice')
 const player = createAudioPlayer()
+const cookie = 'LOGIN_INFO=AFmmF2swRAIgXI2owcG_TQ2_F-OPwNFLVoh3NAZAYs1D2ku9MQt0350CIBq-zclJS1V49zBBbl3JIJLAYM1M1vizhhmb6BXQe9xJ:QUQ3MjNmemxtRGZGSkYyVklqa09CTVBUYVpaTDF2UFItbXMtN2p1OE05SWJtNktQYUpxU014allqbGpoOUk1RXVZcWhMWjRma3RwLUg0alRKLVBkWHRFVFh5OVRuaWM0MXdrQmJ4a0RCdW85S3J1bFdMeHowMDBKbTJxTEJ3N2Y1V012VEtTelF1OHlNa1FGanB4SjRmQmV2X09heXlveFl3; VISITOR_INFO1_LIVE=oBrrx3iCyQ8; PREF=tz=America.Denver&f6=40000000&f5=20000&f7=100; VISITOR_PRIVACY_METADATA=CgJVUxICGgA%3D; YSC=v5QvChCd_OI; SID=bQhgi2rJkbnHyHkfN2AO3W0AOZr4f4-JUUEBV6hR7goIWFfaR0xlI-nXVU3ta9lBMJZhaw.; __Secure-1PSID=bQhgi2rJkbnHyHkfN2AO3W0AOZr4f4-JUUEBV6hR7goIWFfayTcxyiWrkd3GKCV-ruo1aQ.; __Secure-3PSID=bQhgi2rJkbnHyHkfN2AO3W0AOZr4f4-JUUEBV6hR7goIWFfasY0-lW8yRIz8ZduIJHZmyQ.; HSID=AwBGOY5Or1mV_jR7X; SSID=AmjXi35iYAIU2qa3u; APISID=bIfyae2zo6_uzzBD/AhjYOE55WwYnK62mR; SAPISID=U2lBjqp-_bpSoKqW/AnMWeqgcPsI2Zuanq; __Secure-1PAPISID=U2lBjqp-_bpSoKqW/AnMWeqgcPsI2Zuanq; __Secure-3PAPISID=U2lBjqp-_bpSoKqW/AnMWeqgcPsI2Zuanq; __Secure-1PSIDTS=sidts-CjIB3e41hVAK-qxninHm29r_w09ZA_jZTS5m9bCrivBJxUb5Qj_4xXS9rBCI1eT3PBTO1BAA; __Secure-3PSIDTS=sidts-CjIB3e41hVAK-qxninHm29r_w09ZA_jZTS5m9bCrivBJxUb5Qj_4xXS9rBCI1eT3PBTO1BAA; SIDCC=ACA-OxMx1-jWXhuaoG74MLny6GP9KiN4c7ZqtWreeqC4VyMXWJklcWYFuKTJvqJw58OHo0ml9zs; __Secure-1PSIDCC=ACA-OxNfV3znNtoj3acr1XHwVP_KcdNteQxVXwwqHefFEtKw4waFPrWP-Hgsl3fDkDSQ9iKnG5M; __Secure-3PSIDCC=ACA-OxPJ1pSW9IyVzicB7cnX9Q5fUU6kemZ5aEgPZ-NH-OuXgwe3Dpa-Vq407yBRLJbDB17moxE; ST-1b=disableCache=true&itct=CCAQsV4iEwif6ty9xOqBAxXsSUwIHXeECJ8%3D&csn=MC40MjI5MDExODUzMDMzOTE3&endpoint=%7B%22clickTrackingParams%22%3A%22CCAQsV4iEwif6ty9xOqBAxXsSUwIHXeECJ8%3D%22%2C%22commandMetadata%22%3A%7B%22webCommandMetadata%22%3A%7B%22url%22%3A%22%2F%22%2C%22webPageType%22%3A%22WEB_PAGE_TYPE_BROWSE%22%2C%22rootVe%22%3A3854%2C%22apiUrl%22%3A%22%2Fyoutubei%2Fv1%2Fbrowse%22%7D%7D%2C%22browseEndpoint%22%3A%7B%22browseId%22%3A%22FEwhat_to_watch%22%7D%7D'
 
 const queue = new Map()
 // queue(message.guild.id, queue_constructor object {voice channel, text channel, connection, song[]})
@@ -49,7 +50,7 @@ const video_player = async (message, song) =>{
         const stream = await ytdl(await song.url, {filter: 'audioonly',
         requestOptions: {
             headers: {
-                Cookie: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+                Cookie: cookie
             }
         }});
         const resource = await createAudioResource(stream)
