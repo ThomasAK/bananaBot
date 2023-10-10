@@ -96,6 +96,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         })
         await server_queue.connection.subscribe(player)
         await video_player(message, await server_queue.songs.shift())
+        await sleep(1000)
         await player.on('error', async error => {
             if (!server_queue.songs[0]) {
                 await server_queue.connection.destroy();
@@ -155,3 +156,10 @@ const song_queue = async (message, server_queue)=>{
     let string = server_queue.songs.map(song => {if (song.title) return `${song.title} \n`})
     message.channel.send(`Songs: ${string.join('')}`)
 }
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
