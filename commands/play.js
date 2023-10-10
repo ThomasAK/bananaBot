@@ -98,12 +98,13 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await video_player(message, await server_queue.songs.shift())
         await sleep(1000)
         await player.on('error', async error => {
+            console.error(error);
+            message.channel.send(`Song Failed to play try different song.`)
             if (!server_queue.songs[0]) {
                 await server_queue.connection.destroy();
                 await clear_queue(message.guild)
                 return
             }
-            console.error(error);
             await video_player(message, await server_queue.songs.shift())
         });
         await player.on(AudioPlayerStatus.Idle, async () => {
