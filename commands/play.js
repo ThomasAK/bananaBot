@@ -46,9 +46,14 @@ const clear_queue = async (guild) => {
 //Create song resource then play song.
 const video_player = async (message, song) =>{
     try {
-        const stream = await ytdl(await song.url, {filter: 'audioonly'});
-        //const resource = await createAudioResource(stream)
-        await player.play(stream)
+        const stream = await ytdl(await song.url, {filter: 'audioonly',
+        requestOptions: {
+            headers: {
+                Cookie: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+            }
+        }});
+        const resource = await createAudioResource(stream)
+        await player.play(resource)
         await message.channel.send(`Now Playing ${song.title}`)
     }catch (err) {
         console.log(`${err} video_player failure?`)
