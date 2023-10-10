@@ -45,11 +45,14 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
-    console.log(song.url)
-    const stream = await ytdl(await song.url, {filter: 'audioonly'});
-    const resource = await createAudioResource(stream)
-    await player.play(resource)
-    await message.channel.send(`Now Playing ${song.title}`)
+    try {
+        const stream = await ytdl(await song.url, {filter: 'audioonly'});
+        const resource = await createAudioResource(stream)
+        await player.play(resource)
+        await message.channel.send(`Now Playing ${song.title}`)
+    }catch (err) {
+        message.channel.send('Song failed to play.v')
+    }
 }
 
 //If args[0] is  url then get info through url and pass it back.
