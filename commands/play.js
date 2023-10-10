@@ -65,7 +65,8 @@ const getSongURL = async (message, args)=>{
         }
 
         const video = await video_finder(args.join(' '));
-        if (video.url) {
+        if (video) {
+            console.log(video)
             return  {title: video.title, url: video.url}
         } else {
             message.channel.send('Unable to find video');
