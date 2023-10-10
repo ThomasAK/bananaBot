@@ -51,6 +51,7 @@ const video_player = async (message, song) =>{
         await player.play(resource)
         await message.channel.send(`Now Playing ${song.title}`)
     }catch (err) {
+        console.log(err)
         message.channel.send('Song failed to play.v')
     }
 }
