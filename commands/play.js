@@ -45,6 +45,7 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
+    console.log(song.url)
     const stream = await ytdl(await song.url, {filter: 'audioonly'});
     const resource = await createAudioResource(stream)
     await player.play(resource)
