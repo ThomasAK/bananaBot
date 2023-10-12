@@ -154,8 +154,8 @@ const skipSong = async (message, server_queue) => {
 
 const stop_song = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
-    if (!server_queue.connection) return message.channel.send('Bot not connected. ')
     await server_queue.connection.destroy();
+    if (!server_queue.connection) return message.channel.send('Bot not connected. ')
     await clear_queue(message.guild)
 }
 
