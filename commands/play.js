@@ -46,6 +46,7 @@ const clear_queue = async (guild) => {
 
 //Create song resource then play song.
 const video_player = async (message, song) =>{
+    const server_queue = queue.get(message.guild.id)
     try {
         const stream = await ytdl(await song.url, {filter: 'audioonly',
         requestOptions: {
@@ -59,6 +60,12 @@ const video_player = async (message, song) =>{
     }catch (err) {
         console.log(`${err} video_player failure?`)
         message.channel.send('Song failed to play.')
+        if (!server_queue.songs) {
+            await server_queue.connection.destroy();
+            await clear_queue(message.guild)
+            return
+        }
+        await video_player(message, await server_queue.songs.shift())
     }
 }
 
