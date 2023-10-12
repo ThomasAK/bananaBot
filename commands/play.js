@@ -125,7 +125,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         });
         await player.on(AudioPlayerStatus.Idle, async () => {
             console.log(server_queue.songs[0])
-            if (!server_queue.songs) {
+            if (!server_queue.songs[0]) {
                 await server_queue.connection.destroy();
                 await clear_queue(message.guild)
                 return
