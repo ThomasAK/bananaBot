@@ -63,7 +63,7 @@ const video_player = async (message, song) =>{
         message.channel.send('Song failed to play.')
         player.stop()
         if (server_queue.songs.length === 0) {
-            await server_queue.connection.destroy();
+            server_queue.connection.destroy();
             await clear_queue(message.guild)
             return
         }
@@ -120,7 +120,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             message.channel.send(`Song Failed to play try different song..  ${server_queue.songs.length}`)
             player.stop()
             if (server_queue.songs.length === 0) {
-                await server_queue.connection.destroy();
+                server_queue.connection.destroy();
                 await clear_queue(message.guild)
                 return
             }
@@ -130,7 +130,7 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             console.log(server_queue.songs)
             if (server_queue.songs.length === 0) {
                 player.stop();
-                await server_queue.connection.destroy();
+                server_queue.connection.destroy();
                 await clear_queue(message.guild)
                 return
             }
@@ -152,7 +152,7 @@ const addSongToQueue = async (message, server_queue, song)=>{
 const skipSong = async (message, server_queue) => {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (server_queue.songs.length === 0){
-        await server_queue.connection.destroy();
+        server_queue.connection.destroy();
         await clear_queue(message.guild)
         return message.channel.send('No songs in queue')
     }
