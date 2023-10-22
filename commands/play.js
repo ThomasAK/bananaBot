@@ -117,14 +117,19 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await sleep(1000)
         await player.on('error', async error => {
             console.error(`${error} audio player Error....... \n ${server_queue.songs}`);
-            message.channel.send(`Song Failed to play try different song..  ${server_queue.songs.length}`)
+            let channel = message.guild.channels.cache.find(channel => channel.name === 'bot-commands');
+            if (channel) {
+                channel.send(`Song Failed to play try different song..  ${server_queue.songs.length}`)
+            }
             player.stop()
             if (server_queue.songs.length === 0) {
                 server_queue.connection.destroy();
                 await clear_queue(message.guild)
-                return
+            }else {
+                message.channel.send('Playing next song.')
+                await video_player(message, await server_queue.songs.shift())
             }
-            await video_player(message, await server_queue.songs.shift())
+
         });
         await player.on(AudioPlayerStatus.Idle, async () => {
             console.log(server_queue.songs)
