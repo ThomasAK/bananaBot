@@ -118,11 +118,11 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         await player.on('error', async error => {
             console.error(`${error} audio player Error....... \n ${server_queue.songs}`);
             let channel = message.guild.channels.cache.find(channel => channel.name === 'bot-commands');
-            let message = `Song Failed to play try different song..`
+            let failMessage = `Song Failed to play try different song..`
             let lastMessage = channel.lastMessage.content
             console.log(lastMessage)
-            if (channel && lastMessage !== message) {
-                channel.send(message)
+            if (channel && lastMessage !== failMessage) {
+                channel.send(failMessage)
             }
             player.stop()
             if (server_queue.songs.length === 0) {
