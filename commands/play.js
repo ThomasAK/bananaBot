@@ -1,7 +1,6 @@
 const play = require("play-dl") 
 
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior, VoiceConnectionStatus} = require('@discordjs/voice')
-const player = createAudioPlayer()
 const ytdl = require("youtube-dl-exec")
 const fs = require('fs');
 const os = require('os');
@@ -28,10 +27,10 @@ module.exports = {
         if (cmd === 'play') await setUpSong(message, args, server_queue, voice_channel)
         else if (cmd === 'skip') await skipSong(message, server_queue)
         else if (cmd === 'leave') await stop_song(message, server_queue)
-        else if (cmd === 'pause') await pause_song(message)
-        else if (cmd === 'resume') await resume_song(message)
+        else if (cmd === 'pause') await pause_song(server_queue.player)
+        else if (cmd === 'resume') await resume_song(server_queue.player)
         else if (cmd === 'queue') await song_queue(message, server_queue)
-        else if (cmd === 'clear') await clear_queue(message.guild)
+        else if (cmd === 'clear') await clear_queue(message.guild, server_queue)
     }
 }
 
@@ -46,7 +45,11 @@ const setUpSong = async (message, args, server_queue, voice_channel) => {
 
 //Clear queue and remove bot from channel
 
-const clear_queue = async (guild) => {
+const clear_queue = async (guild, server_queue) => {
+    fs.unlink(server_queue.currentSong, (err) => {
+        if (err) console.error('Error removing temp file:', err);
+    })
+    server_queue.connection.destroy();
     queue.delete(guild.id)
 }
 
@@ -83,37 +86,28 @@ const video_player = async (message, song) =>{
     const server_queue = queue.get(message.guild.id)
     if (!server_queue) return
     try {
-        
+        await message.channel.send(`Setting up song`)
         const audioFile = await downloadAudio(song.url);
     
         // Create a read stream from the downloaded file
         const audioStream = fs.createReadStream(audioFile);
+        server_queue.currentSong = audioFile
         
         // Create an audio resource from the file stream
         const resource = createAudioResource(audioStream, {
         inlineVolume: true
         });
-
-        player.on('stateChange', (oldState, newState) => {
-            if (newState.status === 'idle') {
-                console.log(`Cleaning up temp file: ${audioFile}`);
-                fs.unlink(audioFile, (err) => {
-                if (err) console.error('Error removing temp file:', err);
-                });
-            }
-        })
         
-        await player.play(resource)
+        await server_queue.player.play(resource)
         await message.channel.send(`Now Playing ${song.title}`)
         
     }catch (err) {
         console.log(`${err} video_player failure?`)
         console.trace(err);
         message.channel.send('Song failed to play.')
-        player.stop()
+        server_queue.player.stop()
         if (server_queue.songs.length === 0) {
-            server_queue.connection.destroy();
-            await clear_queue(message.guild)
+            await clear_queue(message.guild, server_queue)
             return
         }
         await video_player(message, await server_queue.songs.shift())
@@ -123,7 +117,7 @@ const video_player = async (message, song) =>{
 //If args[0] is  url then get info through url and pass it back.
 //If args[0] is not url locate song in YouTube then collect URL and then pass song info back
 const getSongURL = async (message, args)=>{
-    if (play.validate(args[0]) && await play.validate(args[0]) != "search") {
+    if (play.validate(args[0]) && await play.validate(args[0]) !== "search") {
         console.log(await play.validate(args[0]))
         const song_info = await play.video_info(args[0]);
         return  {title: song_info.video_details.title, url: song_info.video_details.url}
@@ -149,7 +143,9 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         voice_channel: voice_channel,
         text_channel: message.channel,
         connection: null,
-        songs: []
+        player: createAudioPlayer(),
+        songs: [],
+        currentSong: null
     }
 
     await queue.set(message.guild.id, queue_constructor);
@@ -164,9 +160,9 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
         
         
         await video_player(message, await server_queue.songs.shift())
-        await server_queue.connection.subscribe(player)
+        await server_queue.connection.subscribe(server_queue.player)
         await sleep(1000)
-        await player.on('error', async error => {
+        server_queue.player.on('error', async error => {
             console.error(`${error} audio player Error....... \n ${server_queue.songs}`);
             let channel = message.guild.channels.cache.find(channel => channel.name === 'bot-commands');
             let failMessage = `Song Failed to play try different song..`
@@ -175,10 +171,9 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
             if (channel && lastMessage !== failMessage) {
                 channel.send(failMessage)
             }
-            player.stop()
+            server_queue.player.stop()
             if (server_queue.songs.length === 0) {
-                server_queue.connection.destroy();
-                await clear_queue(message.guild)
+                await clear_queue(message.guild, server_queue)
             }else {
                 message.channel.send('Playing next song.')
                 await video_player(message, await server_queue.songs.shift())
@@ -186,12 +181,15 @@ const setUpServerQueue = async (message, voice_channel, song)=>{
 
         });
         
-        await player.on(AudioPlayerStatus.Idle, async () => {
+        server_queue.player.on(AudioPlayerStatus.Idle, async () => {
             console.log(server_queue.songs)
+            console.log(`Cleaning up temp file: ${server_queue.currentSong}`);
+            fs.unlink(server_queue.currentSong, (err) => {
+                if (err) console.error('Error removing temp file:', err);
+            })
             if (server_queue.songs.length === 0) {
-                player.stop();
-                server_queue.connection.destroy();
-                await clear_queue(message.guild)
+                server_queue.player.stop();
+                await clear_queue(message.guild, server_queue)
                 return
             }
             await video_player(message, await server_queue.songs.shift());
@@ -210,28 +208,24 @@ const addSongToQueue = async (message, server_queue, song)=>{
 }
 
 const skipSong = async (message, server_queue) => {
-    if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (server_queue.songs.length === 0){
         server_queue.connection.destroy();
         await clear_queue(message.guild)
         return message.channel.send('No songs in queue')
     }
-    player.stop()
-    await video_player(message, server_queue.songs.shift())
+    server_queue.player.stop();
 }
 
 const stop_song = async (message, server_queue) => {
-    if (!message.member.voice.channel) return message.channel.send('You need to be in a channel')
     if (!server_queue.connection) return message.channel.send('Bot not connected. ')
-    await server_queue.connection.destroy();
-    await clear_queue(message.guild)
+    await clear_queue(message.guild, server_queue)
 }
 
-const pause_song = ()=>{
+const pause_song = (player)=>{
     player.pause()
 }
 
-const resume_song = ()=>{
+const resume_song = (player)=>{
     player.unpause()
 }
 

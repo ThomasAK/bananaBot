@@ -13,8 +13,15 @@ FROM node:${NODE_VERSION}-alpine
 # Use production node environment by default.
 ENV NODE_ENV production
 
-
 WORKDIR /usr/src/app
+
+RUN apk update \
+    apk add build-essential
+
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
+
+ENV YOUTUBE_DL_SKIP_PYTHON_CHECK=1
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
@@ -22,11 +29,12 @@ WORKDIR /usr/src/app
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
-
+    --mount=type=cache,target=/root/.npm
+RUN npm i
 # Run the application as a non-root user.
 USER node
+
+
 
 # Copy the rest of the source files into the image.
 COPY . .

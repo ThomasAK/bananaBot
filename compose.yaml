@@ -13,6 +13,7 @@ services:
       context: .
     environment:
       NODE_ENV: production
+      YOUTUBE_DL_SKIP_PYTHON_CHECK: ${YOUTUBE_DL_SKIP_PYTHON_CHECK:-1}
     ports:
       - 40:40
 

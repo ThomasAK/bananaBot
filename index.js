@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, MessageEmbed, Partials} = require('discord.js');
+const { Client, GatewayIntentBits, Collection, MessageEmbed, Partials, EmbedBuilder} = require('discord.js');
 //const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS], partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'PRESENCE_UPDATE', 'GUILD_MEMBER','GUILDS'] });
 const intents = [
     GatewayIntentBits.Guilds,
@@ -80,7 +80,7 @@ client.on('messageCreate',  async (message) => {
             msg.channel.send('!!play !!skip !!pause !!resume !!clear !!queue !!leave \n !!roll')
             break;
         default:
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setDescription(`!!${command} is not a command please try again ${msg.member.displayName}! \n To see a list of commands use !!commands.`)
                 .setImage("https://media.giphy.com/media/z1bE45A1GsyT6/giphy.gif");
             msg.channel.send({embeds: [embed]})
